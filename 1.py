@@ -1,0 +1,47 @@
+import time
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import DesiredCapabilities
+
+dc = DesiredCapabilities.FIREFOX.copy()
+# import ipdb; ipdb.set_trace()
+# profile = webdriver.FirefoxProfile()
+# profile.set_preference("general.useragent.override", "whatever you want")
+# driver = webdriver.Firefox(profile)
+# driver.get("http://127.0.0.1:8888/")
+
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+user_agents = [
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.77.4 (KHTML, like Gecko) Version/7.0.5 Safari/537.77.4",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
+    "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
+]
+
+
+while True:
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("general.useragent.override", random.choice(user_agents))
+    print DesiredCapabilities.FIREFOX
+    driver = webdriver.Remote(
+        command_executor='http://127.0.0.1:4444/wd/hub',
+        # command_executor='http://80.85.85.190:4444/wd/hub',
+        desired_capabilities=DesiredCapabilities.FIREFOX,
+        browser_profile=profile,
+    )
+    random_list = ['https://www.youtube.com/watch?v=lHYKSTROp8o', 'https://www.youtube.com/watch?v=rRzxEiBLQCA', 'https://www.youtube.com/watch?v=-tKVN2mAKRI', 'https://www.youtube.com/watch?v=pC7a27zE2fs', 'https://www.youtube.com/watch?v=wnJ6LuUFpMo', 'https://www.youtube.com/watch?v=Amq-qlqbjYA', 'https://www.youtube.com/watch?v=5ZwctAeWrVs', 'https://www.youtube.com/watch?v=UceaB4D0jpo', 'https://www.youtube.com/watch?v=sV2t3tW_JTQ']
+    target = 'https://www.youtube.com/watch?v=Vf_GUAV5Cw4'
+    driver.get(random.choice(random_list))
+    time.sleep(random.random()*3)
+    driver.get(random.choice(random_list))
+    time.sleep(random.random()*7)
+    driver.get(target)
+    print '--------page got---------'
+    time.sleep(random.random()*30 + 150)
+    driver.close()
+    driver.quit()
