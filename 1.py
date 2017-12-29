@@ -1,3 +1,4 @@
+import random
 import time
 
 from selenium import webdriver
@@ -42,6 +43,5 @@ while True:
     time.sleep(random.random()*7)
     driver.get(target)
     print '--------page got---------'
-    time.sleep(random.random()*30 + 150)
+    time.sleep(random.random()*400+ 20)
     driver.close()
-    driver.quit()
