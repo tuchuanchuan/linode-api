@@ -79,4 +79,4 @@ class Instance(Base):
         ssh.close()
 
     def init_env(self):
-        self.ssh_cmd(['apt update', 'apt install -y docker.io python-pip', 'systemctl start docker', 'docker run -d --net=host --restart=always -p 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-firefox:3.8.1-bohrium', 'curl -O https://raw.githubusercontent.com/tuchuanchuan/linode-api/master/1.py', 'pip install selenium', 'nohup python 1.py > out 2>&1 &'])
+        self.ssh_cmd(['apt update', 'apt install -y docker.io python-pip', 'systemctl start docker', 'docker run -d --net=host --restart=always -p 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-firefox:3.8.1-bohrium', 'curl -O https://raw.githubusercontent.com/tuchuanchuan/linode-api/master/us_proxy.py', 'python us_proxy.py' 'curl -O https://raw.githubusercontent.com/tuchuanchuan/linode-api/master/1.py', 'pip install selenium', 'nohup python 1.py > out 2>&1 &'])
