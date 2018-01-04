@@ -14,6 +14,8 @@ def create_new_linode(linde_id=None):
     time.sleep(5)
     j.init_env()
     # j.ssh_cmd(['nohup python 1.py > out 2>&1 &'])
+    time.sleep(60 * 60)
+    j.delete()
 
 
 # id_list = [4828542, 4828628, 4828629, 4828630, 4828632, 4828633, 4828634, 4828635, 4828636, 4828638, 4828639]

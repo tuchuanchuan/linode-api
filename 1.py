@@ -4,6 +4,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import DesiredCapabilities
+from selenium.webdriver.common.proxy import Proxy, ProxyType
 
 dc = DesiredCapabilities.FIREFOX.copy()
 # import ipdb; ipdb.set_trace()
@@ -25,15 +26,32 @@ user_agents = [
 ]
 
 
+def get_random_proxy():
+    proxies = []
+    with open('us-proxy') as f:
+        for l in f:
+            if l.strip():
+                proxies.append(l.strip())
+    return random.choice(proxies)
+
+
 while True:
     profile = webdriver.FirefoxProfile()
     profile.set_preference("general.useragent.override", random.choice(user_agents))
-    print DesiredCapabilities.FIREFOX
+    random_proxy = get_random_proxy()
+    proxy = Proxy({
+        'proxyType': ProxyType.MANUAL,
+        'httpProxy': random_proxy,
+        'ftpProxy': random_proxy,
+        'sslProxy': random_proxy,
+        'noProxy': '' # set this value as desired
+    })
     driver = webdriver.Remote(
         command_executor='http://127.0.0.1:4444/wd/hub',
         # command_executor='http://80.85.85.190:4444/wd/hub',
         desired_capabilities=DesiredCapabilities.FIREFOX,
         browser_profile=profile,
+        proxy=proxy,
     )
     random_list = ['https://www.youtube.com/watch?v=lHYKSTROp8o', 'https://www.youtube.com/watch?v=rRzxEiBLQCA', 'https://www.youtube.com/watch?v=-tKVN2mAKRI', 'https://www.youtube.com/watch?v=pC7a27zE2fs', 'https://www.youtube.com/watch?v=wnJ6LuUFpMo', 'https://www.youtube.com/watch?v=Amq-qlqbjYA', 'https://www.youtube.com/watch?v=5ZwctAeWrVs', 'https://www.youtube.com/watch?v=UceaB4D0jpo', 'https://www.youtube.com/watch?v=sV2t3tW_JTQ']
     target = 'https://www.youtube.com/watch?v=Vf_GUAV5Cw4'
