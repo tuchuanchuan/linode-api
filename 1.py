@@ -1,5 +1,9 @@
+import logging
 import random
 import time
+import traceback
+import urllib
+import json
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -27,12 +31,8 @@ user_agents = [
 
 
 def get_random_proxy():
-    proxies = []
-    with open('us-proxy') as f:
-        for l in f:
-            if l.strip():
-                proxies.append(l.strip())
-    return random.choice(proxies)
+    proxies = json.loads(urllib.urlopen('http://173.230.151.140:22345/proxy/checked/list?protocol=https').read())
+    return ':'.join(random.choice(proxies['proxy_list'])[:2])
 
 
 while True:
@@ -40,6 +40,7 @@ while True:
         profile = webdriver.FirefoxProfile()
         profile.set_preference("general.useragent.override", random.choice(user_agents))
         random_proxy = get_random_proxy()
+        print random_proxy
         proxy = Proxy({
             'proxyType': ProxyType.MANUAL,
             'httpProxy': random_proxy,
@@ -55,7 +56,7 @@ while True:
             proxy=proxy,
         )
         random_list = ['https://www.youtube.com/watch?v=lHYKSTROp8o', 'https://www.youtube.com/watch?v=rRzxEiBLQCA', 'https://www.youtube.com/watch?v=-tKVN2mAKRI', 'https://www.youtube.com/watch?v=pC7a27zE2fs', 'https://www.youtube.com/watch?v=wnJ6LuUFpMo', 'https://www.youtube.com/watch?v=Amq-qlqbjYA', 'https://www.youtube.com/watch?v=5ZwctAeWrVs', 'https://www.youtube.com/watch?v=UceaB4D0jpo', 'https://www.youtube.com/watch?v=sV2t3tW_JTQ']
-        target = 'https://www.youtube.com/watch?v=Vf_GUAV5Cw4'
+        target = 'https://www.youtube.com/watch?v=4a2RnnMIvK0'
         driver.get(random.choice(random_list))
         time.sleep(random.random()*3)
         driver.get(random.choice(random_list))
@@ -64,5 +65,7 @@ while True:
         print '--------page got---------'
         time.sleep(random.random()*400+ 20)
         driver.close()
+    except KeyboardInterrupt as e:
+        raise
     except:
-        pass
+        print traceback.format_exc()

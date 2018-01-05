@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import sqlite3
+import traceback
 
 import requests
 from scrapy.selector import Selector
@@ -8,12 +9,24 @@ from scrapy.selector import Selector
 def us_proxy(url, headers, f):
     r = requests.get(url, headers=headers)
     blocks = Selector(text=r.text).xpath("//table[@id='proxylisttable']//tbody//tr").extract()
+    i = 0
     for block in blocks:
         info = Selector(text=block).xpath("//td/text()").extract()
         if info[4] == 'elite proxy':
             foo = "{}:{}\n".format(info[0], info[1])
             print foo
-            f.write(foo)
+            proxies = {
+                'https': 'https://{}'.format(foo.strip()),
+            }
+            print proxies
+            try:
+                requests.get('https://www.youtube.com/', proxies=proxies, timeout=3.0)
+                f.write(foo)
+                i += 1
+                if i > 20:
+                    break
+            except:
+                print traceback.format_exc()
 
 
 if __name__ == '__main__':
